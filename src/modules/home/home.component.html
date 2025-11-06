@@ -1,1 +1,24 @@
-<h1>{{title}}</h1>
+<div class="grid">
+  <div *ngFor="let product of products"
+       class="col-3">
+    <p-card [style]="{'width':'100%'}">
+      <ng-template pTemplate="header">
+        <img [src]="product.imageUrl" [alt]="product.name"
+             class="w-full" style="object-fit: cover; height: 200px" />
+      </ng-template>
+      <ng-template pTemplate="title">
+        {{ product.name }}
+      </ng-template>
+      <ng-template pTemplate="subtitle">
+        {{ product.price | currency }}
+      </ng-template>
+
+      <p>{{ product.description }}</p>
+
+      <ng-template pTemplate="footer">
+        <button pButton type="button" label="Ver detalle"
+                class="w-full" (click)="goToDetail(product.id)"></button>
+      </ng-template>
+    </p-card>
+  </div>
+</div>

@@ -1,111 +1,86 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { TrmService } from '../../core/services/TRM.service';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { LayoutService } from '../../app/layout/service/layout.service';
+import { CommonModule } from '@angular/common';
+import { ProductService } from '../../core/services/product.service';
+import { ProductModel } from '../../core/models/product.model';
+import { UtilityService } from '../../shared/serviceUtils';
 
 @Component({
   selector: 'app-home',
-  imports: [ButtonModule, CardModule, ChartModule],
+  imports: [ButtonModule, CardModule, ChartModule, CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   standalone: true,
 })
 export class HomeComponent implements OnInit {
-
-  title = 'Nexus store'
-  error: string | null = null;
-  data: any;
-  options: any;
-  trm: any | null = null;
-  currencies: any;
-
+  title = 'Nexus store';
   layoutService = inject(LayoutService);
+  // products = [
+  //   {
+  //     id: 1,
+  //     name: 'Producto A',
+  //     image:
+  //       'https://www.ktronix.com/medias/4711387666333-001-1400Wx1400H?context=bWFzdGVyfGltYWdlc3w0NDY4MnxpbWFnZS93ZWJwfGFERXpMMmd3T0M4eE5EWXlNVGN3TmpNNE56UTROaTgwTnpFeE16ZzNOalkyTXpNelh6QXdNVjh4TkRBd1YzZ3hOREF3U0F8M2QyMWUzZDk4MTNjNjkxYWE5YjM3NTMyYTkyZGM4ZTU2NTRjNzE3OGZmZDdmZTQ0MzI1NDRiZDhhOTI1NzQ2Ng',
+  //     price: 29.99,
+  //     description: 'Descripción del producto A',
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Producto B',
+  //     image:
+  //       'https://http2.mlstatic.com/D_NQ_NP_746011-MLA54835790960_042023-O.webp',
+  //     price: 49.99,
+  //     description: 'Descripción del producto B',
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Producto B',
+  //     image:
+  //       'https://http2.mlstatic.com/D_NQ_NP_746011-MLA54835790960_042023-O.webp',
+  //     price: 49.99,
+  //     description: 'Descripción del producto B',
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Producto B',
+  //     image:
+  //       'https://http2.mlstatic.com/D_NQ_NP_746011-MLA54835790960_042023-O.webp',
+  //     price: 49.99,
+  //     description: 'Descripción del producto B',
+  //   },
 
-  currentPrimaryColorName = computed(() => this.layoutService.layoutConfig().primary);
+  //   // … más productos
+  // ];
+
+products!: ProductModel[];
+
+  currentPrimaryColorName = computed(
+    () => this.layoutService.layoutConfig().primary
+  );
+  constructor(private productService: ProductService,  private utilityService: UtilityService) {}
 
   ngOnInit(): void {
-    console.log("From Home")
-    this.getData();
-
-    this.data = {
-                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'],
-                datasets: [
-                    {
-                        label: 'Ingresos',
-                        backgroundColor: '#aed823',
-                        borderColor:  'white',
-                        data: [65, 59, 80, 81, 56, 55, 40]
-                    },
-                    {
-                        label: 'Egresos',
-                        backgroundColor: '#b054f4',
-                        borderColor:  'white',
-                        data: [28, 48, 40, 19, 86, 27, 90]
-                    }
-                ]
-            };
-
-     this.options = {
-                maintainAspectRatio: false,
-                aspectRatio: 0.8,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: 'gray'
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        ticks: {
-                            color: 'white',
-                            font: {
-                                weight: 500
-                            }
-                        },
-                        grid: {
-                            color: 'black',
-                            drawBorder: false
-                        }
-                    },
-                    y: {
-                        ticks: {
-                            color: 'gray'
-                        },
-                        grid: {
-                            color: 'black',
-                            drawBorder: false
-                        }
-                    }
-                }
-            };
+    console.log('From Home');
+    this.getProducts();
   }
 
-  constructor(private trmService: TrmService) { }
+  getProducts() {
+    this.productService.getProducts().subscribe({
+      next: (resp) => {
+        this.products = resp.data;
 
-  getData() {
-    this.trmService.getTrmActual().subscribe(
-      (valor) => {
-        this.trm = valor;
-        console.log('Data Actual:', this.trm);
       },
-      (err) => {
-        this.error = err.message;
-        console.error(err);
-      }
-    );
-    this.trmService.getCurrencies().subscribe(
-      (valor) => {
-        this.currencies = valor;
-        console.log('Data Currency:', this.currencies);
+      error: () => {
+        this.utilityService.showError(
+          'Error de Conexión',
+          'No se pudo obtener los productos.'
+        );
       },
-      (err) => {
-        this.error = err.message;
-        console.error(err);
-      }
-    );
+    });
   }
 
+  goToDetail(id: string) {}
 }

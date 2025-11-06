@@ -4,3 +4,8 @@
 @use 'primeicons/primeicons.css';
 @use 'primeflex/primeflex.css';
 @use './assets/demo/demo.scss';
+
+.validation-error{
+    color: rgb(255, 61, 61);
+    margin-left: 10px;
+}
