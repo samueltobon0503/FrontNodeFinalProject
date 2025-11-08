@@ -20,12 +20,16 @@ export const routes: Routes = [
     canActivateChild: [AuthGuard],
     children: [
       { path: '', component: HomeComponent },
-      // {
-      //   path: RoutesEnum.PRODUCT,
-      //   loadChildren: () => import('../modules/product/product.routes'),
-      // }
+      {
+        path: 'user',
+        loadChildren: () => import('../modules/user/user.routes'),
+      },
+      {
+        path: 'cart',
+        loadChildren: () => import('../modules/cart/cart.routes'),
+      },
     ],
   },
   { path: 'auth', loadChildren: () => import('../modules/auth/auth.routes') },
-  { path: '**', redirectTo: '/home' },
+  { path: '**', redirectTo: '/' },
 ];

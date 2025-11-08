@@ -93,9 +93,11 @@ import { RoutesEnum } from '../../../shared/Dictionary,enum';
           <span class="flex align-items-center ml-4 text-color-secondary">{{
             userName
           }}</span>
-          <button type="button" class="layout-topbar-action">
+          <button type="button" class="layout-topbar-action" (click)="goToProfile()">
             <i class="pi pi-user"></i>
-            <span>Profile</span>
+          </button>
+          <button type="button" class="layout-topbar-action" (click)="goToCart()">
+            <i class="pi pi-shopping-cart"></i>
           </button>
           <button type="button" class="layout-topbar-action" (click)="logout()">
             <i class="pi pi-sign-out"></i>
@@ -127,5 +129,11 @@ export class AppTopbar {
   logout() {
     this.authService.logout();
     this.router.navigate([`${RoutesEnum.AUTH}/${RoutesEnum.LOGIN}`]);
+  }
+  goToProfile() {
+    this.router.navigate([`/user/profile`]);
+  }
+  goToCart() {
+    this.router.navigate([`/cart`]);
   }
 }

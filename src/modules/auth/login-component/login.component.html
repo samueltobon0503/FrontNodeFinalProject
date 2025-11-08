@@ -31,7 +31,10 @@
                             placeholder="Contraseña" [toggleMask]="true" [fluid]="true" [feedback]="false"></p-password>
                         @if (errors.passwordError) {
                         <small class="validation-error">{{errors.passwordError}}</small>}
+                         <span (click)="goToRegister()"
+                            class="font-medium flex mt-2 no-underline text-right cursor-pointer text-primary">Registrate aqui</span>
                     </div>
+
                     <p-button label="Iniciar sesión" styleClass="w-full" (click)="makeDto()"></p-button>
 
                 </div>

@@ -9,7 +9,10 @@ import { RippleModule } from 'primeng/ripple';
 import { UtilityService } from '../../../shared/serviceUtils';
 import { AuthService } from '../../../core/services/auth.service';
 import { AppFloatingConfigurator } from '../../../app/layout/component/app.floatingconfigurator';
-import { RegisterModel, RegisterValidator } from '../../../core/models/register.model';
+import {
+  RegisterModel,
+  RegisterValidator,
+} from '../../../core/models/register.model';
 
 interface errorsInterface {
   nameError: string;
@@ -76,31 +79,28 @@ export class SignupComponent {
     );
     if (hasErrors) return;
 
-    this.isLoading = true;
-    // this.authService.register(this.register).subscribe({
-    //   next: () => {
-    //     this.isLoading = false;
-    //     // Redirige al login tras un registro exitoso
-    //     this.router.navigate(['/auth/login']);
-    //   },
-    //   error: (err) => {
-    //     // Asume que el error es por email duplicado
-    //     // (puedes mejorar esta lógica de error)
-    //     this.isLoading = false;
-    //     this.errors.emailError = 'Este email ya está en uso.';
-    //   }
-    // });
+    this.authService.createUser(this.register).subscribe({
+      next: () => {
+        this.router.navigate(['/auth/login']);
+      },
+      error: (err) => {
+        this.errors.emailError = 'Este email ya está en uso.';
+      }
+    });
   }
 
   clearErrors() {
-   this.errors = {
-    nameError: '',
-    emailError: '',
-    passwordError: '',
-    lastNameError: '',
-    userNameError: '',
-    phoneError: '',
-  };
+    this.errors = {
+      nameError: '',
+      emailError: '',
+      passwordError: '',
+      lastNameError: '',
+      userNameError: '',
+      phoneError: '',
+    };
+  }
 
+  goToLogin() {
+    this.router.navigate(['auth/login']);
   }
 }

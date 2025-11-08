@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
     };
   }
 
-  showDialog() {
-    this.visible = true;
+  goToRegister() {
+    this.router.navigate(['auth/register']);
   }
 }

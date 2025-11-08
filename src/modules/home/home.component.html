@@ -1,10 +1,10 @@
 <div class="grid">
-  <div *ngFor="let product of products"
+  <div *ngFor="let product of visibleProducts"
        class="col-3">
-    <p-card [style]="{'width':'100%'}">
+    <p-card [style]="{'width':'100%' }">
       <ng-template pTemplate="header">
         <img [src]="product.imageUrl" [alt]="product.name"
-             class="w-full" style="object-fit: cover; height: 200px" />
+             class="w-full" />
       </ng-template>
       <ng-template pTemplate="title">
         {{ product.name }}
@@ -16,9 +16,16 @@
       <p>{{ product.description }}</p>
 
       <ng-template pTemplate="footer">
-        <button pButton type="button" label="Ver detalle"
+        <button pButton type="button" label="Agregar al carrito"
                 class="w-full" (click)="goToDetail(product.id)"></button>
       </ng-template>
     </p-card>
   </div>
+</div>
+<div class="p-4">
+    <p-paginator [rows]="rows"
+                 [totalRecords]="totalRecords"
+                 [first]="first"
+                 (onPageChange)="onPageChange($event)">
+    </p-paginator>
 </div>

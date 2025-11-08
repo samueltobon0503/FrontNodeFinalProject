@@ -17,18 +17,17 @@ class RegisterValidator extends Validator<RegisterModel> {
       .notEmpty()
       .withMessage('El campo de email es obligatorio');
     this.ruleFor('name')
-      .notNull()
-      .withMessage('El campo de email es obligatorio');
+      .notEmpty()
+      .withMessage('El campo de nombre es obligatorio');
     this.ruleFor('lastName')
-      .notNull()
-      .withMessage('El campo de email es obligatorio');
+      .notEmpty()
+      .withMessage('El campo de apellido es obligatorio');
     this.ruleFor('userName')
-      .notNull()
-      .withMessage('El campo de email es obligatorio');
+      .notEmpty()
+      .withMessage('El campo de usuario es obligatorio');
     this.ruleFor('phone')
-      .notNull()
-      .withMessage('El campo de email es obligatorio');
-
+      .notEmpty()
+      .withMessage('El campo de telefono es obligatorio');
     this.ruleFor('password')
       .notEmpty()
       .withMessage('El campo de contraseña es obligatorio');

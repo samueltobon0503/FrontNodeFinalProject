@@ -7,10 +7,11 @@ import { CommonModule } from '@angular/common';
 import { ProductService } from '../../core/services/product.service';
 import { ProductModel } from '../../core/models/product.model';
 import { UtilityService } from '../../shared/serviceUtils';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
 @Component({
   selector: 'app-home',
-  imports: [ButtonModule, CardModule, ChartModule, CommonModule],
+  imports: [ButtonModule, CardModule, ChartModule, CommonModule, PaginatorModule ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   standalone: true,
@@ -18,52 +19,21 @@ import { UtilityService } from '../../shared/serviceUtils';
 export class HomeComponent implements OnInit {
   title = 'Nexus store';
   layoutService = inject(LayoutService);
-  // products = [
-  //   {
-  //     id: 1,
-  //     name: 'Producto A',
-  //     image:
-  //       'https://www.ktronix.com/medias/4711387666333-001-1400Wx1400H?context=bWFzdGVyfGltYWdlc3w0NDY4MnxpbWFnZS93ZWJwfGFERXpMMmd3T0M4eE5EWXlNVGN3TmpNNE56UTROaTgwTnpFeE16ZzNOalkyTXpNelh6QXdNVjh4TkRBd1YzZ3hOREF3U0F8M2QyMWUzZDk4MTNjNjkxYWE5YjM3NTMyYTkyZGM4ZTU2NTRjNzE3OGZmZDdmZTQ0MzI1NDRiZDhhOTI1NzQ2Ng',
-  //     price: 29.99,
-  //     description: 'Descripción del producto A',
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Producto B',
-  //     image:
-  //       'https://http2.mlstatic.com/D_NQ_NP_746011-MLA54835790960_042023-O.webp',
-  //     price: 49.99,
-  //     description: 'Descripción del producto B',
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Producto B',
-  //     image:
-  //       'https://http2.mlstatic.com/D_NQ_NP_746011-MLA54835790960_042023-O.webp',
-  //     price: 49.99,
-  //     description: 'Descripción del producto B',
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Producto B',
-  //     image:
-  //       'https://http2.mlstatic.com/D_NQ_NP_746011-MLA54835790960_042023-O.webp',
-  //     price: 49.99,
-  //     description: 'Descripción del producto B',
-  //   },
-
-  //   // … más productos
-  // ];
-
-products!: ProductModel[];
+  products!: ProductModel[];
+  visibleProducts: ProductModel[] = [];
+  totalRecords: number = 0;
+  rows: number = 8;
+  first: number = 0;
 
   currentPrimaryColorName = computed(
     () => this.layoutService.layoutConfig().primary
   );
-  constructor(private productService: ProductService,  private utilityService: UtilityService) {}
+  constructor(
+    private productService: ProductService,
+    private utilityService: UtilityService
+  ) {}
 
   ngOnInit(): void {
-    console.log('From Home');
     this.getProducts();
   }
 
@@ -71,7 +41,8 @@ products!: ProductModel[];
     this.productService.getProducts().subscribe({
       next: (resp) => {
         this.products = resp.data;
-
+        this.totalRecords = this.products.length;
+        this.updateVisibleProducts();
       },
       error: () => {
         this.utilityService.showError(
@@ -83,4 +54,17 @@ products!: ProductModel[];
   }
 
   goToDetail(id: string) {}
+
+  onPageChange(event: PaginatorState) {
+    this.first = event.first ?? 0;
+    this.rows = event.rows ?? 8;
+    this.updateVisibleProducts();
+    window.scrollTo(0, 0);
+  }
+
+  updateVisibleProducts() {
+    const startIndex = this.first;
+    const endIndex = this.first + this.rows;
+    this.visibleProducts = this.products.slice(startIndex, endIndex);
+  }
 }
