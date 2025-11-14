@@ -7,11 +7,8 @@ import { InputNumber } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { Toast } from 'primeng/toast';
-import { ProductModel, ProductValidator } from 'src/core/models/product.model';
-import { ProductService } from 'src/core/services/product.service';
-import { RequestStatesEnum, RoutesEnum } from 'src/shared/Dictionary,enum';
-import { LoaderComponent } from 'src/shared/loader/loader.component';
-import { UtilityService } from 'src/shared/serviceUtils';
+import { ProductService } from '../../../core/services/product.service';
+import { UtilityService } from '../../../shared/serviceUtils';
 
 interface errorsInterface {
     nameError: string;
@@ -21,7 +18,7 @@ interface errorsInterface {
 
 @Component({
     selector: 'app-product-form',
-    imports: [CardModule, Toast, LoaderComponent, ButtonModule, FormsModule, InputNumber, InputTextModule, TextareaModule],
+    imports: [CardModule, Toast, ButtonModule, FormsModule, InputNumber, InputTextModule, TextareaModule],
     templateUrl: './product-form.component.html',
     standalone: true,
     styleUrl: './product-form.component.scss',
@@ -33,14 +30,7 @@ export class ProductFormComponent implements OnInit {
         priceError: ''
     };
     currentMode: string | undefined = '';
-    selectedProduct: ProductModel = {
-        id: 0,
-        name: '',
-        price: 0,
-        description: '',
-        productCategoryId: 0
-    };
-    RoutesEnum = RoutesEnum;
+    selectedProduct: any;
     isLoading: boolean = true;
 
     constructor(
@@ -53,7 +43,7 @@ export class ProductFormComponent implements OnInit {
     ngOnInit(): void {
         this.Aroute.url.subscribe((segments) => {
             this.currentMode = segments.pop()?.path;
-            if (this.currentMode == RoutesEnum.EDIT) {
+            if (this.currentMode == 'edit') {
                 this.getProductById();
             }
             this.isLoading = false;
@@ -63,7 +53,7 @@ export class ProductFormComponent implements OnInit {
     getProductById() {
         this.productService.getProductbyId(this.Aroute.snapshot.queryParams['id']).subscribe({
             next: (resp) => {
-                this.selectedProduct = resp.payload;
+                this.selectedProduct = resp.data;
                 this.isLoading = false;
             },
             error: () => {
@@ -75,35 +65,22 @@ export class ProductFormComponent implements OnInit {
 
     submit() {
         const dto = this.selectedProduct;
-        let productValidator = new ProductValidator();
-        const validationResult = productValidator.validate(dto);
-        const hasErrors = this.utilityService.handleValidationErrors(validationResult, this.errors);
-        if (hasErrors) {
-            return;
-        }
-        const navigateAfterToast = () => {
-            setTimeout(() => {
-                this.goToProduct();
-            }, 2000);
-        };
 
-        if (this.currentMode === RoutesEnum.CREATE) {
+        if (this.currentMode === 'create') {
             dto.productCategoryId = 1;
             this.productService.createProduct(dto).subscribe({
                 next: () => {
                     this.utilityService.showSuccess('Éxito', 'El producto se ha creado correctamente');
-                    navigateAfterToast();
                 },
                 error: () => {
                     this.utilityService.showError('Error', 'Error al crear el producto');
                 },
                 complete: () => {}
             });
-        } else if (this.currentMode === RoutesEnum.EDIT) {
+        } else if (this.currentMode === 'edit') {
             this.productService.editProduct(dto).subscribe({
                 next: () => {
                     this.utilityService.showSuccess('Éxito', 'El producto se ha editado correctamente');
-                    navigateAfterToast();
                 },
                 error: () => {
                     this.utilityService.showError('Error', 'Error al editar el producto');
@@ -111,10 +88,6 @@ export class ProductFormComponent implements OnInit {
                 complete: () => {}
             });
         }
-    }
-
-    goToProduct() {
-        this.route.navigate([`${RoutesEnum.PRODUCT}`]);
     }
 
     clearErrors() {

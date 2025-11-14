@@ -28,6 +28,10 @@ export const routes: Routes = [
         path: 'order',
         loadChildren: () => import('../modules/orders/orders.routes'),
       },
+            {
+        path: 'product',
+        loadChildren: () => import('../modules/product/product.routes'),
+      },
     ],
   },
   { path: 'auth', loadChildren: () => import('../modules/auth/auth.routes') },

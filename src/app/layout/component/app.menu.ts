@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-menu',
@@ -23,6 +24,14 @@ import { AppMenuitem } from './app.menuitem';
 })
 export class AppMenu {
   model: MenuItem[] = [];
+  isAdmin: boolean = false;
+
+  constructor(private authService: AuthService){
+    this.authService.currentUser$.subscribe((user) => {
+      this.isAdmin = user?.role === 'admin'
+      console.log(this.isAdmin)
+    })
+  }
 
   ngOnInit() {
     this.model = [
@@ -30,8 +39,9 @@ export class AppMenu {
         label: 'Menú',
         items: [
           { label: 'Tienda', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
-          { label: 'Mis ordenes', icon: 'pi pi-fw pi-box', routerLink: ['/order'] },
-          { label: 'Gestión de ordenes', icon: 'pi pi-fw pi-box', routerLink: ['/order/management'] },
+          { label: 'Mis ordenes', icon: 'pi pi-fw pi-box', routerLink: ['/order'], visible: !this.isAdmin },
+          { label: 'Gestión de ordenes', icon: 'pi pi-fw pi-box', routerLink: ['/order/management'], visible: this.isAdmin  },
+          { label: 'Gestión de productos', icon: 'pi pi-fw pi-box', routerLink: ['/product'], visible: this.isAdmin  },
           { label: 'Perfil', icon: 'pi pi-fw pi-user', routerLink: ['/user/profile'] },
         ],
       },
