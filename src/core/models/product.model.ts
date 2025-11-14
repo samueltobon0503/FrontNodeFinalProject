@@ -4,6 +4,7 @@ export interface ProductModel {
   description: string;
   price:       string;
   stock:       number;
+  sku:         string;
   categoryId:  string;
   imageUrl:    string;
   active:      boolean;

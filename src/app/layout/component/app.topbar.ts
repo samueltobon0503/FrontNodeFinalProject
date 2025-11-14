@@ -7,11 +7,13 @@ import { AppConfigurator } from './app.configurator';
 import { LayoutService } from '../service/layout.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { RoutesEnum } from '../../../shared/Dictionary,enum';
+import { OverlayBadgeModule } from 'primeng/overlaybadge';
+import { CartService } from '../../../core/services/cart.service';
 
 @Component({
   selector: 'app-topbar',
   standalone: true,
-  imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator],
+  imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator, OverlayBadgeModule],
   template: ` <div class="layout-topbar">
     <div class="layout-topbar-logo-container">
       <button
@@ -93,11 +95,19 @@ import { RoutesEnum } from '../../../shared/Dictionary,enum';
           <span class="flex align-items-center ml-4 text-color-secondary">{{
             userName
           }}</span>
-          <button type="button" class="layout-topbar-action" (click)="goToProfile()">
+          <button
+            type="button"
+            class="layout-topbar-action"
+            (click)="goToProfile()"
+          >
             <i class="pi pi-user"></i>
           </button>
-          <button type="button" class="layout-topbar-action" (click)="goToCart()">
-            <i class="pi pi-shopping-cart"></i>
+          <button
+            type="button"
+            class="layout-topbar-action"
+            (click)="goToCart()"
+          >
+             <i class="pi pi-shopping-cart"></i>
           </button>
           <button type="button" class="layout-topbar-action" (click)="logout()">
             <i class="pi pi-sign-out"></i>
@@ -109,14 +119,19 @@ import { RoutesEnum } from '../../../shared/Dictionary,enum';
 })
 export class AppTopbar {
   items!: MenuItem[];
+  cartCount: number = 0;
 
   userName: string;
   constructor(
     public layoutService: LayoutService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cartService: CartService,
   ) {
     this.userName = this.authService.getUser().email;
+     this.cartService.cartCount$.subscribe((count) => {
+      this.cartCount = count;
+    });
   }
 
   toggleDarkMode() {

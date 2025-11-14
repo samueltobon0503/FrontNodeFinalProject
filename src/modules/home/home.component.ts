@@ -8,10 +8,21 @@ import { ProductService } from '../../core/services/product.service';
 import { ProductModel } from '../../core/models/product.model';
 import { UtilityService } from '../../shared/serviceUtils';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { CartService } from '../../core/services/cart.service';
+import { Toast } from 'primeng/toast';
+import { SocketService } from '../../core/services/socket.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-home',
-  imports: [ButtonModule, CardModule, ChartModule, CommonModule, PaginatorModule ],
+  imports: [
+    ButtonModule,
+    CardModule,
+    ChartModule,
+    CommonModule,
+    PaginatorModule,
+    Toast,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   standalone: true,
@@ -30,7 +41,8 @@ export class HomeComponent implements OnInit {
   );
   constructor(
     private productService: ProductService,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private cartService: CartService,
   ) {}
 
   ngOnInit(): void {
@@ -47,13 +59,29 @@ export class HomeComponent implements OnInit {
       error: () => {
         this.utilityService.showError(
           'Error de Conexión',
-          'No se pudo obtener los productos.'
+          'malpartido'
         );
       },
     });
   }
 
-  goToDetail(id: string) {}
+  addToCart(product: any) {
+    let body = { productId: product._id, quantity: 1 };
+    this.cartService.addCartItem(body).subscribe({
+      next: (resp: any) => {
+        this.utilityService.showSuccess(
+          'Exito',
+          'Producto agregado correctamente'
+        );
+      },
+      error: (err: any) => {
+        this.utilityService.showError(
+          'Error de Conexión',
+          'No se pudo obtener el historial de solicitudes.'
+        );
+      },
+    });
+  }
 
   onPageChange(event: PaginatorState) {
     this.first = event.first ?? 0;

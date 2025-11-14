@@ -17,7 +17,7 @@
 
       <ng-template pTemplate="footer">
         <button pButton type="button" label="Agregar al carrito"
-                class="w-full" (click)="goToDetail(product.id)"></button>
+                class="w-full" (click)="addToCart(product)"></button>
       </ng-template>
     </p-card>
   </div>
@@ -29,3 +29,4 @@
                  (onPageChange)="onPageChange($event)">
     </p-paginator>
 </div>
+<p-toast />

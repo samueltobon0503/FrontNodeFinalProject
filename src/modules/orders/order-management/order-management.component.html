@@ -1,0 +1,133 @@
+<p-card>
+  <div
+    class="flex flex-column justify-content-between align-items-center md:flex-row md: mb-2"
+  >
+    <div class="flex flex-column">
+      <h2 #title class="mb-0 font-poppins">Historial de Ordenes</h2>
+    </div>
+  </div>
+
+  <p-card>
+    <p-table
+      #requestTable
+      [paginator]="true"
+      [scrollable]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      [value]="orders"
+      [globalFilterFields]="['type', 'createAt', '_id', '']"
+    >
+      <ng-template #caption>
+        <div class="flex w-full mx-2 my-3">
+          <p-iconfield iconPosition="right" class="w-full">
+            <p-inputicon> <i class="pi pi-search"></i> </p-inputicon>
+            <input
+              pInputText
+              type="text"
+              (input)="filterGlobal($event)"
+              placeholder="Buscar por cualquir categoria..."
+              class="w-full"
+            />
+          </p-iconfield>
+        </div>
+      </ng-template>
+      <ng-template #header>
+        <tr>
+          <th class="text-center" pFrozenColumn>Código</th>
+          <th class="text-center">Estado</th>
+          <th class="text-center">Fecha de creación</th>
+          <th class="text-center">Cantidad de productos</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-request let-i="rowIndex">
+        <tr>
+          <td class="text-center" pFrozenColumn>{{ request?.orderNumber }}</td>
+          <td class="text-center">{{ request.orderStatusId }}</td>
+          <td class="text-center">
+            {{ request.createdAt | date : "dd/MM/yyyy HH:mm" }}
+          </td>
+          <td class="text-center">{{ request.items?.length }}</td>
+          <td class="text-center">
+            <i
+              class="pi pi-eye text-xl cursor-pointer border-round-md bg-primary hover:bg-orange-700 p-2"
+              (click)="showDialog(request)"
+            >
+            </i>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template #footer> </ng-template>
+    </p-table>
+  </p-card>
+</p-card>
+
+<p-dialog
+  (onHide)="closedialog()"
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '40rem' }"
+  [header]="'Detalles de la orden - ' + selectedRequest.orderNumber"
+>
+  <div class="grid">
+    <div class="col-6">
+      <div class="text-md text-color-secondary">Fecha de Creación</div>
+      <div>{{ selectedRequest.createdAt | date : "dd/MM/yyyy HH:mm" }}</div>
+    </div>
+    <div class="col-6">
+      <div class="text-md text-color-secondary">Estado</div>
+      <p-tag [value]="selectedRequest.orderStatusId" />
+    </div>
+  </div>
+  <p-divider />
+
+  <div class="font-bold text-xl mb-2">Productos Solicitados</div>
+  <div class="flex flex-column gap-3 mb-4">
+    @for (item of selectedRequest.items; track $index) {
+    <div class="p-2 border-round-lg shadow-3">
+      <div class="flex justify-content-between align-items-center">
+        <div class="h">
+          <div class="font-semibold text-base">{{ item.name }}</div>
+          <div class="text-md text-color-secondary"></div>
+          Cantidad: {{ item.quantity }} | Precio unitario:
+          {{ item.unitPrice | currency : "USD" }}
+        </div>
+        <div class="e">
+          <div class="font-semibold text-base text-primary">
+            {{ item.subtotal | currency : "USD" }}
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  <div
+    class="flex justify-content-between align-items-center border-top-1 pt-3"
+  >
+    <div class="font-bold text-xl">Total:</div>
+    <div class="font-bold text-2xl text-primary">
+      {{ selectedRequest.totalAmount | currency : "USD" }}
+    </div>
+  </div>
+
+<div class="flex flex-column gap-3">
+    <label for="statusSelect" class="font-bold">Actualizar Estado</label>
+    <p-select
+      #statusSelect  [options]="options"
+      [(ngModel)]="status"
+      optionLabel="name"
+      optionValue="code"
+      placeholder="Selecciona el nuevo estado de la orden"
+      inputId="statusSelect"
+      [appendTo]="'body'"
+    />
+    <p-button
+      label="Actualizar Estado"
+      icon="pi pi-check-circle"
+      severity="success"
+      (click)="updateState()"
+    />
+  </div>
+</p-dialog>
+<p-toast />

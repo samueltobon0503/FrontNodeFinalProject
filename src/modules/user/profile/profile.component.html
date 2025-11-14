@@ -1,1 +1,156 @@
-<p>profile works!</p>
+<p-card>
+  <div
+    class="flex flex-column justify-content-between align-items-center md:flex-row md: mb-2"
+  >
+    <div class="flex flex-column">
+      <h2 #title class="mb-0 font-poppins">Perfil de usuario</h2>
+    </div>
+  </div>
+
+  <div class="grid mt-4 text-xl">
+    <div class="col-2">
+      <div><strong>Nombre:</strong> {{ user.name }}</div>
+    </div>
+
+    <div class="col-2">
+      <div><strong>Apellido:</strong> {{ user.lastName }}</div>
+    </div>
+
+    <div class="col-2">
+      <div><strong>Email:</strong> {{ user.email }}</div>
+    </div>
+
+    <div class="col-2">
+      <div><strong>Usuario:</strong> {{ user.userName }}</div>
+    </div>
+
+    <div class="col-2">
+      <div><strong>Teléfono:</strong> {{ user.phone }}</div>
+    </div>
+
+    <div class="col-2">
+      <div>
+        <strong>Creado:</strong>
+        {{ user.createdAt | date : "yyyy-MM-dd HH:mm" }}
+      </div>
+    </div>
+  </div>
+
+  <h4>Dirección</h4>
+
+  <div class="grid mt-4 text-xl">
+    <!-- street -->
+    <div class="col-2">
+      <label
+        for="street"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Calle</label
+      >
+      <input
+        (onChange)="clearErrors()"
+        pInputText
+        id="street"
+        type="text"
+        placeholder="Calle"
+        class="w-full"
+        [(ngModel)]="adress.street"
+      />
+      @if (errors.streetError) {
+      <small class="validation-error">{{ errors.streetError }}</small>
+      }
+    </div>
+
+    <!-- city -->
+    <div class="col-2">
+      <label
+        for="city"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Ciudad</label
+      >
+      <input
+        (onChange)="clearErrors()"
+        pInputText
+        id="city"
+        type="text"
+        placeholder="Ciudad"
+        class="w-full"
+        [(ngModel)]="adress.city"
+      />
+      @if (errors.cityError) {
+      <small class="validation-error">{{ errors.cityError }}</small>
+      }
+    </div>
+
+    <!-- state -->
+    <div class="col-2">
+      <label
+        for="state"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Departamento</label
+      >
+      <input
+        (onChange)="clearErrors()"
+        pInputText
+        id="state"
+        type="text"
+        placeholder="Departamento"
+        class="w-full"
+        [(ngModel)]="adress.state"
+      />
+      @if (errors.stateError) {
+      <small class="validation-error">{{ errors.stateError }}</small>
+      }
+    </div>
+
+    <!-- postalCode -->
+    <div class="col-2">
+      <label
+        for="postalCode"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >Código Postal</label
+      >
+      <input
+        (onChange)="clearErrors()"
+        pInputText
+        id="postalCode"
+        type="text"
+        placeholder="Código Postal"
+        class="w-full"
+        [(ngModel)]="adress.postalCode"
+      />
+      @if (errors.postalCodeError) {
+      <small class="validation-error">{{ errors.postalCodeError }}</small>
+      }
+    </div>
+
+    <!-- country -->
+    <div class="col-2">
+      <label
+        for="country"
+        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
+        >País</label
+      >
+      <input
+        (onChange)="clearErrors()"
+        pInputText
+        id="country"
+        type="text"
+        placeholder="País"
+        class="w-full"
+        [(ngModel)]="adress.country"
+      />
+      @if (errors.countryError) {
+      <small class="validation-error">{{ errors.countryError }}</small>
+      }
+    </div>
+    <div class="col-2 mt-5">
+      <button
+        pButton
+        type="button"
+        label="Guardar dirección"
+        class="w-full"
+        (click)="send()"
+      ></button>
+    </div>
+  </div>
+</p-card>

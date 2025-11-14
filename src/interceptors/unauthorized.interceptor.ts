@@ -24,7 +24,6 @@ export const unauthorizedInterceptor: HttpInterceptorFn = (req, next) => {
             if (error instanceof HttpErrorResponse && error.status === 403) {
                 console.warn('Respuesta no autorizada');
 
-                router.navigate(['/']);
             }
 
             return throwError(() => error);

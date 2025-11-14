@@ -54,12 +54,15 @@ export class LoginComponent implements OnInit {
 
     this.isLoading = true;
     this.authService.authenticate(this.login).subscribe({
-      next: () => {
+      next: (res) => {
         this.isLoading = false;
+            console.log('✅ NEXT ejecutado:', res);
+
         this.router.navigate(['/']);
       },
-      error: () => {
-        this.errors.emailError = 'Credenciales inválidas.';
+      error: (err) => {
+        console.log("W",err.error)
+        this.errors.emailError = err.error.error;
       }
     });
 

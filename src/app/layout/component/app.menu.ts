@@ -30,6 +30,8 @@ export class AppMenu {
         label: 'Menú',
         items: [
           { label: 'Tienda', icon: 'pi pi-fw pi-home', routerLink: ['/'] },
+          { label: 'Mis ordenes', icon: 'pi pi-fw pi-box', routerLink: ['/order'] },
+          { label: 'Gestión de ordenes', icon: 'pi pi-fw pi-box', routerLink: ['/order/management'] },
           { label: 'Perfil', icon: 'pi pi-fw pi-user', routerLink: ['/user/profile'] },
         ],
       },

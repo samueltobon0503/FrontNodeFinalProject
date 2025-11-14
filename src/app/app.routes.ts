@@ -8,11 +8,7 @@ import { RoutesEnum } from '../shared/Dictionary,enum';
 
 export const routes: Routes = [
   // {path: '', pathMatch: 'full', redirectTo: 'home' },
-  {
-    path: '',
-    component: AppLayout,
-    children: [{ path: '', component: HomeComponent }],
-  },
+
   {
     path: '',
     component: AppLayout,
@@ -27,6 +23,10 @@ export const routes: Routes = [
       {
         path: 'cart',
         loadChildren: () => import('../modules/cart/cart.routes'),
+      },
+      {
+        path: 'order',
+        loadChildren: () => import('../modules/orders/orders.routes'),
       },
     ],
   },
