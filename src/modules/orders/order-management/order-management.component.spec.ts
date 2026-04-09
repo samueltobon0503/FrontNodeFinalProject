@@ -15,14 +15,14 @@ describe('OrderManagementComponent', () => {
       // Al ser un componente Standalone
       imports: [OrderManagementComponent],
       providers: [
-        // 1. Proveedores para peticiones HTTP (necesarios para el servicio de órdenes)
+        // 1. Proveedores para peticiones HTTP (necesarios para el servicio de órdenes)fgdfg
         provideHttpClient(),
         provideHttpClientTesting(),
 
         // 2. Proveedores para navegación (por si tienes botones de "Ver detalle")
         provideRouter([]),
 
-        // 3. Servicios que causaban el NullInjectorError
+        // 3. Servicios que causaban el NullInjectorErrordasd
         MessageService,
         UtilityService
       ]
