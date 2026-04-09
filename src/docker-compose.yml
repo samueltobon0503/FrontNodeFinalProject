@@ -1,0 +1,7 @@
+services:
+  angular-service:
+    build: .
+    container_name: angular-frontend
+    ports:
+      - "8081:80"
+    restart: always
