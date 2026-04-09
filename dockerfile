@@ -17,6 +17,6 @@ RUN npm run build -- --configuration production
 # Etapa 2: Servidor
 FROM nginx:alpine
 # Tu ruta según la imagen de VS Code anterior
-COPY --from=build /app/dist/technical-test-front/browser /usr/share/nginx/html
+COPY --from=build /app/dist/PFA_front /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
