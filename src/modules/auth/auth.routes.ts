@@ -4,5 +4,5 @@ import { SignupComponent } from "./signup/signup.component";
 export default [
     {path: 'login', component: LoginComponent},
     {path: 'register', component: SignupComponent},
-    //Dockeriza por favor
+    //Dockeriza por favor, te lo pido 
 ]
