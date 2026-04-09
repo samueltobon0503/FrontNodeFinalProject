@@ -15,7 +15,7 @@ describe('OrderManagementComponent', () => {
       // Al ser un componente Standalone
       imports: [OrderManagementComponent],
       providers: [
-        // 1. Proveedores para peticiones HTTP (necesarios para el servicio de órdenes)
+        // 1. Proveedores para peticiones HTTP (necesarios para el servicio de órdenes)fgdfg
         provideHttpClient(),
         provideHttpClientTesting(),
 
