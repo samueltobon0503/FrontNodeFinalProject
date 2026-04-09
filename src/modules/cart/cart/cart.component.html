@@ -56,12 +56,12 @@
 
       <ng-container *ngIf="!address || !address.street">
         <p style="color: var(--red-500); font-weight: bold">
-           Ve a tu perfil y agrega tu dirección para poder continuar.
+          Ve a tu perfil y agrega tu dirección para poder continuar.
         </p>
       </ng-container>
 
       <button
-      [disabled]="!address.street"
+        [disabled]="!address.street"
         pButton
         label="checkout"
         class="p-button-warning"
@@ -78,4 +78,5 @@
     </div>
   </p-card>
 </div>
+<p>hola</p>
 <p-toast />
