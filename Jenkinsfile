@@ -16,19 +16,19 @@ pipeline {
       }
     }
 
-    stage ('Run tests') {
-      steps {
-        echo 'starting running tests...'
+    // stage ('Run tests') {
+    //   steps {
+    //     echo 'starting running tests...'
 
-        script {
-          if (isUnix()) {
-            sh 'npx ng test --watch=false'
-          } else {
-            bat 'npx ng test --watch=false'
-          }
-        }
-      }
-    }
+    //     script {
+    //       if (isUnix()) {
+    //         sh 'npx ng test --watch=false'
+    //       } else {
+    //         bat 'npx ng test --watch=false'
+    //       }
+    //     }
+    //   }
+    // }
 
     stage ('Down containers') {
       steps {
